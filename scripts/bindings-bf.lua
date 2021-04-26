@@ -228,6 +228,10 @@ local function convert_struct_member(member)
 	end
 end
 
+local function format_cname( cname )
+	 return cname:gsub("_([%w])", string.upper):gsub("^%l", string.upper)
+end
+
 local namespace = ""
 
 function converter.types(typ)
@@ -398,7 +402,7 @@ function converter.funcs(func)
 	for _, arg in ipairs(func.args) do
 		table.insert(args, convert_type(arg) .. " " .. arg.name)
 	end
-	yield("public static extern " .. convert_ret_type(func.ret) .. " " .. func.cname
+	yield("public static extern " .. convert_ret_type(func.ret) .. " " .. format_cname(func.cname)
 		.. "(" .. table.concat(args, ", ") .. ");")
 end
 
